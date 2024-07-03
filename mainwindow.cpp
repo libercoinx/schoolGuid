@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    buttonGroup.setParent(this);
+    buttonGroup.addButton(ui->site_0, 0);
 }
 
 MainWindow::~MainWindow()

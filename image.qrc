@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>img/position.png</file>
+        <file>img/map.png</file>
+    </qresource>
+</RCC>
