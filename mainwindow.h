@@ -26,6 +26,11 @@ public:
     std::vector<Site> sites;
     QButtonGroup buttonGroup;
 
+private slots:
+    void on_setButton_clicked();
+
+    void on_homeButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
