@@ -69,14 +69,6 @@ private:
 #include <QPushButton>
 #include <QMessageBox>
 #include "path.h"
-struct Site
-{
-    int num;
-    std::string name;
-    std::string info;
-
-    Site(int n, std::string name, std::string info) : num(n), name(name), info(info) {}
-};
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -95,9 +87,9 @@ protected:
 
 private slots:
     void on_setButton_clicked();
-    void on_addButton_clicked();
-    void on_deleteButton_clicked();
-    void updateComboBoxes();
+//    void on_addButton_clicked();
+//    void on_deleteButton_clicked();
+//    void updateComboBoxes();
     void on_homeButton_clicked();
     void showContextMenu(QPushButton *button, const QPoint &globalPos);
     void confirmAndDeleteSite(QPushButton *button);
@@ -110,7 +102,6 @@ private:
     QButtonGroup buttonGroup;
     QPixmap siteIcon;
     QMap<QPushButton*, int> buttonToSiteIndexMap; // Map to store QPushButton to site index
-    std::vector<Site> sites; // Vector to store site information
 };
 
 #endif // MAINWINDOW_H
