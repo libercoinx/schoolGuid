@@ -74,7 +74,8 @@ struct Site
     int num;
     std::string name;
     std::string info;
-    bool del = false;
+
+    Site(int n, std::string name, std::string info) : num(n), name(name), info(info) {}
 };
 
 QT_BEGIN_NAMESPACE
@@ -105,7 +106,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-     Path path;
+    Path path;
     QButtonGroup buttonGroup;
     QPixmap siteIcon;
     QMap<QPushButton*, int> buttonToSiteIndexMap; // Map to store QPushButton to site index

@@ -123,13 +123,18 @@ MainWindow::MainWindow(QWidget *parent)
     buttonGroup.addButton(ui->site_3, 3);
     buttonGroup.addButton(ui->site_4, 4);
 
+    //初始化sites组
+    sites.push_back(Site(0,"珞珈门","正在探索中"));
+    sites.push_back(Site(1,"珞珈门","正在探索中"));
+    sites.push_back(Site(2,"珞珈门","正在探索中"));
+    sites.push_back(Site(3,"珞珈门","正在探索中"));
+    sites.push_back(Site(4,"珞珈门","正在探索中"));
+
     // 为按钮安装事件过滤器
     ui->map->installEventFilter(this);
-    ui->site_0->installEventFilter(this);
-    ui->site_1->installEventFilter(this);
-    ui->site_2->installEventFilter(this);
-    ui->site_3->installEventFilter(this);
-    ui->site_4->installEventFilter(this);
+    for(auto* button : buttonGroup.buttons()){
+        button->installEventFilter(this);
+    }
 
     // 设置景点图标
     siteIcon = QPixmap(":/images/img/position.png");
@@ -153,9 +158,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_homeButton_clicked()
+{
+    ui->widget_home->show();
+    this->setStyleSheet("background-color: rgb(240, 240, 240)");
+}
+
 void MainWindow::on_setButton_clicked()
 {
+    //隐藏主页控件
     ui->widget_home->hide();
+    this->setStyleSheet("background-color: rgb(255, 255, 213)");
 
     // 显示相关控件
     ui->add_begin->show();
@@ -175,7 +188,6 @@ void MainWindow::on_setButton_clicked()
 
     // 更新下拉框选项
     updateComboBoxes();
-    // this->setStyleSheet("background-color: rgb(255, 255, 213)");
 }
 void MainWindow::on_addButton_clicked()
 {
@@ -229,11 +241,6 @@ void MainWindow::updateComboBoxes()
         }
     }
 }
-void MainWindow::on_homeButton_clicked()
-{
-    ui->widget_home->show();
-    this->setStyleSheet("background-color: rgb(240, 240, 240)");
-}
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
@@ -272,9 +279,9 @@ void MainWindow::confirmAndDeleteSite(QPushButton *button)
     reply = QMessageBox::question(this, "删除景点", "你确定要删除这个景点吗？", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
-        int index = buttonToSiteIndexMap[button];
-        sites[index].del = true;  // Mark the site as deleted
+        sites.erase(sites.begin() + buttonGroup.id(button));
         buttonToSiteIndexMap.remove(button);
+        buttonGroup.removeButton(button);  //按钮组中删除
         delete button;
     }
 }
@@ -296,15 +303,18 @@ void MainWindow::showAddSiteDialog(const QPoint &globalPos)
 void MainWindow::addSite(const QPoint &position, const QString &name, const QString &info)
 {
     QPushButton *siteButton = new QPushButton(ui->map);
-    siteButton->setIcon(QIcon(siteIcon));
-    siteButton->setIconSize(QSize(24, 24));  // 设置图标大小为24x24
+//    siteButton->setIcon(QIcon(siteIcon));
+//    siteButton->setIconSize(QSize(24, 24));  // 设置图标大小为24x24
+    siteButton->setStyleSheet("background-color: rgba(0,0,0,0);"
+                              "image: url(:/images/img/position.png);");
     siteButton->setGeometry(position.x() - 12, position.y() - 12, 24, 24);  // 确保图标中心对齐
     siteButton->setToolTip(name + "\n" + info);
     siteButton->installEventFilter(this);
     siteButton->show();
 
     // 将景点信息存储到sites vector中
-    Site newSite = { static_cast<int>(sites.size()), name.toStdString(), info.toStdString(), false };
+    Site newSite = { static_cast<int>(sites.size()), name.toStdString(), info.toStdString()};
+    buttonGroup.addButton(siteButton, sites.size());
     sites.push_back(newSite);
 
     // 更新buttonToSiteIndexMap
