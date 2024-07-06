@@ -63,12 +63,15 @@ private:
 #include <QButtonGroup>
 #include <QMap>
 #include <vector>
-#include <string>
+#include <QString>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMessageBox>
 #include "path.h"
+#include <QTableView>
+#include <QStandardItemModel>
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -91,17 +94,20 @@ private slots:
 //    void on_deleteButton_clicked();
 //    void updateComboBoxes();
     void on_homeButton_clicked();
-    void showContextMenu(QPushButton *button, const QPoint &globalPos);
-    void confirmAndDeleteSite(QPushButton *button);
-    void showAddSiteDialog(const QPoint &globalPos);
-    void addSite(const QPoint &position, const QString &name, const QString &info);
 
 private:
     Ui::MainWindow *ui;
     Path path;
-    QButtonGroup buttonGroup;
+    std::vector<QPushButton*> buttons;
     QPixmap siteIcon;
     QMap<QPushButton*, int> buttonToSiteIndexMap; // Map to store QPushButton to site index
+    QStandardItemModel* tableModel;  //用于创建展示path的表
+
+    void addSite(const QPoint &position, const QString &name, const QString &info);  //添加景点
+    void updatePathTable();  //更新set页面中所有路径的表格
+    void showContextMenu(QPushButton *button, const QPoint &globalPos);
+    void confirmAndDeleteSite(QPushButton *button);
+    void showAddSiteDialog(const QPoint &globalPos);
 };
 
 #endif // MAINWINDOW_H

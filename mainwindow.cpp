@@ -90,16 +90,17 @@ void MainWindow::showContextMenu(QGraphicsItem *item, const QPoint &globalPos) {
 #include <QDebug>
 #include <QContextMenuEvent>
 #include <QTimer>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    buttonGroup.setParent(this);
     // 确保 setupUi 调用后再隐藏控件
-//    QTimer::singleShot(0, this, [this]()
-//                       {
-//        // 隐藏这些控件，等待 setButton 点击时显示
+    QTimer::singleShot(0, this, [this]()
+                       {
+        // 隐藏这些控件，等待 setButton 点击时显示
+        ui->widget_set->hide();
 //        ui->add_begin->hide();
 //        ui->add->hide();
 //        ui->add_beignsite->hide();
@@ -114,19 +115,20 @@ MainWindow::MainWindow(QWidget *parent)
 //        ui->delete_begin->hide();
 //        ui->delete_end->hide();
 //        ui->deleteButton->hide();
-//    });
+    });
     // 初始化按钮组
-    buttonGroup.addButton(ui->site_0, 0);
-    buttonGroup.addButton(ui->site_1, 1);
-    buttonGroup.addButton(ui->site_2, 2);
-    buttonGroup.addButton(ui->site_3, 3);
-    buttonGroup.addButton(ui->site_4, 4);
+    buttons.push_back(ui->site_0);
+    buttons.push_back(ui->site_1);
+    buttons.push_back(ui->site_2);
+    buttons.push_back(ui->site_3);
+    buttons.push_back(ui->site_4);
 
     // 为按钮安装事件过滤器
     ui->map->installEventFilter(this);
-    for(auto* button : buttonGroup.buttons()){
-        button->installEventFilter(this);
-        button->setToolTip(QString::fromStdString(path.getName(buttonGroup.id(button))) + "\n" + QString::fromStdString(path.getInfo(buttonGroup.id(button))));
+    ui->pathTable->installEventFilter(this);
+    for(auto button = buttons.begin(); button != buttons.end(); button++){
+        (*button)->installEventFilter(this);
+        (*button)->setToolTip(path.getName(std::distance(buttons.begin(), button)) + "\n" + path.getInfo(std::distance(buttons.begin(), button)));
     }
 
     // 设置景点图标
@@ -139,6 +141,20 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Site icon loaded successfully.";
     }
 
+    //初始化pathTable
+    tableModel = new QStandardItemModel();
+    ui->pathTable->setModel(tableModel);
+    QStringList table_h_headers;
+    table_h_headers << "" << "" << "" << "";
+    tableModel->setHorizontalHeaderLabels(table_h_headers);
+    ui->pathTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);  //设置宽度固定
+    ui->pathTable->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);  //设置居中
+    ui->pathTable->setEditTriggers(QAbstractItemView::NoEditTriggers);  //设置不可编辑
+    ui->pathTable->setColumnWidth(0, 100);
+    ui->pathTable->setColumnWidth(1, 40);
+    ui->pathTable->setColumnWidth(2, 100);
+    ui->pathTable->setColumnWidth(3, 100);
+    updatePathTable();
 
     // 连接信号和槽
     connect(ui->setButton, &QPushButton::clicked, this, &MainWindow::on_setButton_clicked);
@@ -153,14 +169,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_homeButton_clicked()
 {
+    //隐藏set界面，显示主页
     ui->widget_home->show();
+    ui->widget_set->hide();
     this->setStyleSheet("background-color: rgb(240, 240, 240)");
 }
 
 void MainWindow::on_setButton_clicked()
 {
-    //隐藏主页控件
+    //隐藏主页，显示set界面
     ui->widget_home->hide();
+    ui->widget_set->show();
     this->setStyleSheet("background-color: rgb(255, 255, 213)");
 
     // 显示相关控件
@@ -242,6 +261,21 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
         showAddSiteDialog(contextMenuEvent->globalPos());
         return true;
+    } else if(obj == ui->pathTable && event->type() == QEvent::ContextMenu)
+    {
+        if(ui->pathTable->currentIndex().isValid()){
+            QMenu menu;
+            menu.addAction("删除路线");
+            QAction* action = menu.exec(cursor().pos());
+            if(action && action->text().compare("删除路线") == 0) {
+                int currentRow = ui->pathTable->currentIndex().row();
+                QString begin = tableModel->data(tableModel->index(currentRow,0)).toString();
+                QString end = tableModel->data(tableModel->index(currentRow,2)).toString();
+                path.deleteEdge(begin, end);  //删除这条边
+                tableModel->removeRow(currentRow);
+            }
+        }
+        return true;
     } else if (event->type() == QEvent::ContextMenu)
     {
         QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
@@ -260,6 +294,7 @@ void MainWindow::showContextMenu(QPushButton *button, const QPoint &globalPos)
     QMenu menu;
     QAction *deleteAction = menu.addAction("删除景点");
     QAction *selectedAction = menu.exec(globalPos);
+
     if (selectedAction == deleteAction)
     {
         confirmAndDeleteSite(button);
@@ -272,9 +307,10 @@ void MainWindow::confirmAndDeleteSite(QPushButton *button)
     reply = QMessageBox::question(this, "删除景点", "你确定要删除这个景点吗？", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
-        path.deleteSite(buttonGroup.id(button));
+        auto it = std::find(buttons.begin(), buttons.end(), button);  //查找对应按钮下标
+        path.deleteSite(std::distance(buttons.begin(), it));  //删除site组和edges组中对应的对象
+        buttons.erase(it);  //删除按钮组中的对应按钮
         buttonToSiteIndexMap.remove(button);
-        buttonGroup.removeButton(button);  //按钮组中删除
         delete button;
     }
 }
@@ -298,17 +334,29 @@ void MainWindow::addSite(const QPoint &position, const QString &name, const QStr
     QPushButton *siteButton = new QPushButton(ui->map);
     siteButton->setIcon(QIcon(siteIcon));
     siteButton->setIconSize(QSize(24, 24));  // 设置图标大小为24x24
-    siteButton->setStyleSheet("background-color: rgba(0,0,0,0);");
+    siteButton->setStyleSheet("background-color: rgba(0,0,0,0);");  //设置背景透明
+    siteButton->setCursor(Qt::PointingHandCursor);  //设置光标
     siteButton->setGeometry(position.x() - 12, position.y() - 12, 24, 24);  // 确保图标中心对齐
     siteButton->setToolTip(name + "\n" + info);
     siteButton->installEventFilter(this);
     siteButton->show();
 
-    // 将景点信息存储到sites vector中
-    buttonGroup.addButton(siteButton, path.getSiteNum());
-    path.addSite(name.toStdString(), info.toStdString());
+    // 将景点信息存储到sites vector和button vector中
+    buttons.push_back(siteButton);
+    path.addSite(name, info);
 
     // 更新buttonToSiteIndexMap
     buttonToSiteIndexMap[siteButton] = path.getSiteNum() - 1;
+}
+
+void MainWindow::updatePathTable() {
+    QList<QStandardItem*> add_items;
+    for(int i = 0; i < path.getSiteNum(); i++)
+        for(int j = 0; j <= i; j++)
+            if(path.edges[i][j] != INF){
+                add_items << new QStandardItem(path.getName(i)) << new QStandardItem("->") << new QStandardItem(path.getName(j)) << new QStandardItem(QString::number(path.edges[i][j]));
+                tableModel->appendRow(add_items);
+                add_items.clear();
+            }
 }
 
