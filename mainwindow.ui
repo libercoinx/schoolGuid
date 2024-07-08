@@ -96,7 +96,7 @@ padding: 10px;</string>
      <property name="geometry">
       <rect>
        <x>296</x>
-       <y>365</y>
+       <y>375</y>
        <width>41</width>
        <height>16</height>
       </rect>
@@ -200,7 +200,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>184</x>
-       <y>360</y>
+       <y>370</y>
        <width>82</width>
        <height>24</height>
       </rect>
@@ -253,7 +253,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>330</x>
-       <y>360</y>
+       <y>370</y>
        <width>82</width>
        <height>24</height>
       </rect>
@@ -284,7 +284,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>365</y>
+       <y>375</y>
        <width>41</width>
        <height>16</height>
       </rect>
@@ -322,26 +322,34 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>425</x>
-       <y>360</y>
+       <y>370</y>
        <width>30</width>
-       <height>26</height>
+       <height>24</height>
       </rect>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">image: url(:/images/img/search.png);
-border-radius: 13px;
+      <string notr="true">border-radius: 12px;
 border-width: 1px;
 border-style: solid;
 border-color: rgb(112, 112, 112);
-background-color: rgba(112,  112, 112, 0.2);
 
 </string>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="images.qrc">
+       <normaloff>:/images/img/search.png</normaloff>:/images/img/search.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>18</width>
+       <height>18</height>
+      </size>
      </property>
     </widget>
     <zorder>text_2</zorder>
@@ -448,17 +456,30 @@ background-color: rgba(112,  112, 112, 0.2);
       <rect>
        <x>430</x>
        <y>400</y>
-       <width>26</width>
+       <width>24</width>
        <height>24</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">image: url(:/images/img/plus.png);
+      <string notr="true">
 
 </string>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="images.qrc">
+       <normaloff>:/images/img/plus.png</normaloff>:/images/img/plus.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>16</width>
+       <height>16</height>
+      </size>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -507,6 +528,8 @@ background-color: rgba(112,  112, 112, 0.2);
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
