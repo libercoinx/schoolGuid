@@ -92,8 +92,9 @@ private slots:
     void on_setButton_clicked();
 //    void on_addButton_clicked();
 //    void on_deleteButton_clicked();
-//    void updateComboBoxes();
     void on_homeButton_clicked();
+
+    void on_addButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -108,6 +109,7 @@ private:
     void showContextMenu(QPushButton *button, const QPoint &globalPos);
     void confirmAndDeleteSite(QPushButton *button);
     void showAddSiteDialog(const QPoint &globalPos);
+    void updateComboBox();
 };
 
 #endif // MAINWINDOW_H

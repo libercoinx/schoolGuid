@@ -156,6 +156,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pathTable->setColumnWidth(3, 100);
     updatePathTable();
 
+    //更新comboBox
+    updateComboBox();
+
     // 连接信号和槽
     connect(ui->setButton, &QPushButton::clicked, this, &MainWindow::on_setButton_clicked);
 //    connect(ui->addButton, &QPushButton::clicked, this, &MainWindow::on_addButton_clicked);
@@ -164,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete tableModel;
     delete ui;
 }
 
@@ -235,33 +239,26 @@ void MainWindow::on_setButton_clicked()
 //    }
 //}
 
-//void MainWindow::updateComboBoxes()
-//{
-//    ui->add_begin->clear();
-//    ui->add_end->clear();
-//    ui->delete_begin->clear();
-//    ui->delete_end->clear();
-
-//    for (const auto &site : path.getSites())
-//    {
-//        if (!site.del)
-//        {
-//            ui->add_begin->addItem(QString::fromStdString(site.name));
-//            ui->add_end->addItem(QString::fromStdString(site.name));
-//            ui->delete_begin->addItem(QString::fromStdString(site.name));
-//            ui->delete_end->addItem(QString::fromStdString(site.name));
-//        }
-//    }
-//}
+void MainWindow::updateComboBox() {
+    ui->combo_begin->clear();
+    ui->combo_end->clear();
+    ui->comboAdd_1->clear();
+    ui->comboAdd_2->clear();
+    QStringList list = path.getSiteList();
+    ui->combo_begin->addItems(list);
+    ui->combo_end->addItems(list);
+    ui->comboAdd_1->addItems(list);
+    ui->comboAdd_2->addItems(list);
+}
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (obj == ui->map && event->type() == QEvent::ContextMenu)
+    if (obj == ui->map && event->type() == QEvent::ContextMenu)  //添加景点
     {
         QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
         showAddSiteDialog(contextMenuEvent->globalPos());
         return true;
-    } else if(obj == ui->pathTable && event->type() == QEvent::ContextMenu)
+    } else if(obj == ui->pathTable && event->type() == QEvent::ContextMenu)  //删除路径
     {
         if(ui->pathTable->currentIndex().isValid()){
             QMenu menu;
@@ -276,7 +273,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             }
         }
         return true;
-    } else if (event->type() == QEvent::ContextMenu)
+    } else if (event->type() == QEvent::ContextMenu)  //删除景点
     {
         QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
         QPushButton *button = qobject_cast<QPushButton *>(obj);
@@ -292,12 +289,22 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 void MainWindow::showContextMenu(QPushButton *button, const QPoint &globalPos)
 {
     QMenu menu;
-    QAction *deleteAction = menu.addAction("删除景点");
+    QAction* deleteAction = menu.addAction("删除景点");
+    QAction* addBeginAction = menu.addAction("作为起点");
+    QAction* addEndAction = menu.addAction("作为终点");
     QAction *selectedAction = menu.exec(globalPos);
 
     if (selectedAction == deleteAction)
     {
         confirmAndDeleteSite(button);
+    } else if (selectedAction == addBeginAction)
+    {
+        auto it = std::find(buttons.begin(), buttons.end(), button);  //查找对应按钮下标
+        ui->combo_begin->setCurrentIndex(std::distance(buttons.begin(), it));
+    } else if(selectedAction == addEndAction)
+    {
+        auto it = std::find(buttons.begin(), buttons.end(), button);  //查找对应按钮下标
+        ui->combo_end->setCurrentIndex(std::distance(buttons.begin(), it));
     }
 }
 
@@ -310,6 +317,8 @@ void MainWindow::confirmAndDeleteSite(QPushButton *button)
         auto it = std::find(buttons.begin(), buttons.end(), button);  //查找对应按钮下标
         path.deleteSite(std::distance(buttons.begin(), it));  //删除site组和edges组中对应的对象
         buttons.erase(it);  //删除按钮组中的对应按钮
+        updateComboBox();  //更新下拉框
+        updatePathTable();  //更新pathTable
         buttonToSiteIndexMap.remove(button);
         delete button;
     }
@@ -345,12 +354,16 @@ void MainWindow::addSite(const QPoint &position, const QString &name, const QStr
     buttons.push_back(siteButton);
     path.addSite(name, info);
 
+    //更新下拉框
+    updateComboBox();
+
     // 更新buttonToSiteIndexMap
     buttonToSiteIndexMap[siteButton] = path.getSiteNum() - 1;
 }
 
 void MainWindow::updatePathTable() {
     QList<QStandardItem*> add_items;
+    tableModel->removeRows(0, tableModel->rowCount());
     for(int i = 0; i < path.getSiteNum(); i++)
         for(int j = 0; j <= i; j++)
             if(path.edges[i][j] != INF){
@@ -358,5 +371,17 @@ void MainWindow::updatePathTable() {
                 tableModel->appendRow(add_items);
                 add_items.clear();
             }
+}
+
+
+void MainWindow::on_addButton_clicked()
+{
+    int site_1 = ui->comboAdd_1->currentIndex();
+    int site_2 = ui->comboAdd_2->currentIndex();
+    int dis = ui->pathDis_in->value();
+    if(site_1 != site_2) {
+        path.addEdge(site_1, site_2, dis);
+        updatePathTable();  //更新pathTable
+    }
 }
 

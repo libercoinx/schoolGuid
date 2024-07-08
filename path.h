@@ -5,6 +5,7 @@
 #include <QString>
 #include <algorithm>
 #include <QDebug>
+#include <QStringList>
 #define INF 0x3f3f3f3f
 
 struct Site
@@ -29,6 +30,7 @@ public:
     QString getInfo(int key);  //获取site信息
     void addEdge(int beginIndex, int endIndex, int length);
     void deleteEdge(QString begin, QString end);
+    QStringList getSiteList();  //获取当前sites的所有name，用来更新comboBox
 //    std::vector<Site> getSites() const;
 //    std::vector<Edge> getEdges() const;
 

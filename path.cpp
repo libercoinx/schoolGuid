@@ -4,10 +4,10 @@ Path::Path()
 {
     //初始化sites组
     sites.push_back(Site("珞珈门","正在探索中"));
-    sites.push_back(Site("珞珈门","正在探索中"));
-    sites.push_back(Site("珞珈门","正在探索中"));
-    sites.push_back(Site("珞珈门","正在探索中"));
-    sites.push_back(Site("珞珈门","正在探索中"));
+    sites.push_back(Site("九一二操场","正在探索中"));
+    sites.push_back(Site("松园操场","正在探索中"));
+    sites.push_back(Site("樱花大道","正在探索中"));
+    sites.push_back(Site("桂园操场","正在探索中"));
 
     //初始化edges矩阵
     edges = std::vector<std::vector<int>>(5, std::vector<int>(5, INF));  //默认无穷大
@@ -62,6 +62,13 @@ void Path::deleteEdge(QString begin, QString end) {
     });
     edges[std::distance(sites.begin(), begin_in_vec)][std::distance(sites.begin(), end_in_vec)] = INF;
     edges[std::distance(sites.begin(), end_in_vec)][std::distance(sites.begin(), begin_in_vec)] = INF;
+}
+
+QStringList Path::getSiteList(){  //获取当前sites的所有name，用来更新comboBox
+    QStringList list;
+    for(auto item : sites)
+        list << item.name;
+    return list;
 }
 
 //void Path::deleteEdge(int beginIndex, int endIndex)

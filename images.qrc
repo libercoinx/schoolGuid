@@ -4,5 +4,7 @@
         <file>img/position.png</file>
         <file>img/home.png</file>
         <file>img/set.png</file>
+        <file>img/search.png</file>
+        <file>img/plus.png</file>
     </qresource>
 </RCC>
