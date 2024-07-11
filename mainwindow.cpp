@@ -385,3 +385,11 @@ void MainWindow::on_addButton_clicked()
     }
 }
 
+
+void MainWindow::on_searchButton_clicked()
+{
+    int begin = ui->combo_begin->currentIndex();
+    int end = ui->combo_end->currentIndex();
+    ui->pathText->setText(path.Dijkstra(begin, end));
+}
+

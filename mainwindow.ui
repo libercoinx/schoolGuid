@@ -140,7 +140,7 @@ padding: 10px;</string>
     <widget class="QPushButton" name="site_4">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>158</x>
        <y>130</y>
        <width>24</width>
        <height>24</height>
@@ -160,7 +160,7 @@ background-color: transparent;</string>
     <widget class="QPushButton" name="map">
      <property name="geometry">
       <rect>
-       <x>-51</x>
+       <x>-40</x>
        <y>-7</y>
        <width>621</width>
        <height>351</height>
@@ -179,7 +179,7 @@ background-color: transparent;</string>
     <widget class="QPushButton" name="site_1">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>290</x>
        <y>130</y>
        <width>24</width>
        <height>24</height>
@@ -212,8 +212,8 @@ background-color: transparent;</string>
     <widget class="QPushButton" name="site_3">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>100</y>
+       <x>230</x>
+       <y>102</y>
        <width>24</width>
        <height>24</height>
       </rect>
@@ -232,7 +232,7 @@ background-color: transparent;</string>
     <widget class="QPushButton" name="site_2">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>400</x>
        <y>30</y>
        <width>24</width>
        <height>24</height>
@@ -301,7 +301,7 @@ background-color: transparent;</string>
     <widget class="QPushButton" name="site_0">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>90</x>
        <y>280</y>
        <width>24</width>
        <height>24</height>
@@ -352,6 +352,106 @@ border-color: rgb(112, 112, 112);
       </size>
      </property>
     </widget>
+    <widget class="QPushButton" name="site_5">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>120</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/images/img/position.png);
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="site_6">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>180</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/images/img/position.png);
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="site_7">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>60</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/images/img/position.png);
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="site_8">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>10</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/images/img/position.png);
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="site_9">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>120</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/images/img/position.png);
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
     <zorder>text_2</zorder>
     <zorder>map</zorder>
     <zorder>site_1</zorder>
@@ -365,6 +465,11 @@ border-color: rgb(112, 112, 112);
     <zorder>pathText</zorder>
     <zorder>site_4</zorder>
     <zorder>searchButton</zorder>
+    <zorder>site_5</zorder>
+    <zorder>site_6</zorder>
+    <zorder>site_7</zorder>
+    <zorder>site_8</zorder>
+    <zorder>site_9</zorder>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -464,9 +569,7 @@ border-color: rgb(112, 112, 112);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">
-
-</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string/>

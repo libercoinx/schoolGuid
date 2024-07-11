@@ -2,6 +2,7 @@
 #define PATH_H
 
 #include <vector>
+#include <queue>
 #include <QString>
 #include <algorithm>
 #include <QDebug>
@@ -10,8 +11,6 @@
 
 struct Site
 {
-//    std::string name;
-//    std::string info;
     QString name;
     QString info;
 
@@ -31,6 +30,7 @@ public:
     void addEdge(int beginIndex, int endIndex, int length);
     void deleteEdge(QString begin, QString end);
     QStringList getSiteList();  //获取当前sites的所有name，用来更新comboBox
+    QString Dijkstra(int begin, int end);  //求解最短路径
 //    std::vector<Site> getSites() const;
 //    std::vector<Edge> getEdges() const;
 
