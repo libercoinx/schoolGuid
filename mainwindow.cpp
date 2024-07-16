@@ -101,20 +101,6 @@ MainWindow::MainWindow(QWidget *parent)
                        {
         // 隐藏这些控件，等待 setButton 点击时显示
         ui->widget_set->hide();
-//        ui->add_begin->hide();
-//        ui->add->hide();
-//        ui->add_beignsite->hide();
-//        ui->delete_2->hide();
-//        ui->delete_beginsite->hide();
-//        ui->add_endsite->hide();
-//        ui->length->hide();
-//        ui->delete_endsite->hide();
-//        ui->add_end->hide();
-//        ui->pathlength->hide();
-//        ui->addButton->hide();
-//        ui->delete_begin->hide();
-//        ui->delete_end->hide();
-//        ui->deleteButton->hide();
     });
     // 初始化按钮组
     buttons.push_back(ui->site_0);
@@ -122,6 +108,11 @@ MainWindow::MainWindow(QWidget *parent)
     buttons.push_back(ui->site_2);
     buttons.push_back(ui->site_3);
     buttons.push_back(ui->site_4);
+    buttons.push_back(ui->site_5);
+    buttons.push_back(ui->site_6);
+    buttons.push_back(ui->site_7);
+    buttons.push_back(ui->site_8);
+    buttons.push_back(ui->site_9);
 
     // 为按钮安装事件过滤器
     ui->map->installEventFilter(this);
@@ -161,8 +152,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 连接信号和槽
     connect(ui->setButton, &QPushButton::clicked, this, &MainWindow::on_setButton_clicked);
-//    connect(ui->addButton, &QPushButton::clicked, this, &MainWindow::on_addButton_clicked);
-//    connect(ui->deleteButton, &QPushButton::clicked, this, &MainWindow::on_deleteButton_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -186,58 +175,7 @@ void MainWindow::on_setButton_clicked()
     ui->widget_set->show();
     this->setStyleSheet("background-color: rgb(255, 255, 213)");
 
-    // 显示相关控件
-//    ui->add_begin->show();
-//    ui->add->show();
-//    ui->add_beignsite->show();
-//    ui->delete_2->show();
-//    ui->delete_beginsite->show();
-//    ui->add_endsite->show();
-//    ui->length->show();
-//    ui->delete_endsite->show();
-//    ui->add_end->show();
-//    ui->pathlength->show();
-//    ui->addButton->show();
-//    ui->delete_begin->show();
-//    ui->delete_end->show();
-//    ui->deleteButton->show();
-
-    // 更新下拉框选项
-//    updateComboBoxes();
 }
-//void MainWindow::on_addButton_clicked()
-//{
-//    int beginIndex = ui->add_begin->currentIndex();
-//    int endIndex = ui->add_end->currentIndex();
-//    bool ok;
-//    int length = ui->pathlength->text().toInt(&ok);
-
-//    if (ok && beginIndex >= 0 && beginIndex < path.getSites().size() && endIndex >= 0 && endIndex < path.getSites().size())
-//    {
-//        path.addEdge(beginIndex, endIndex, length);
-//        QMessageBox::information(this, "道路添加成功", "道路添加成功！");
-//    }
-//    else
-//    {
-//        QMessageBox::warning(this, "错误", "请输入有效的路径长度和景点！");
-//    }
-//}
-
-//void MainWindow::on_deleteButton_clicked()
-//{
-//    int beginIndex = ui->delete_begin->currentIndex();
-//    int endIndex = ui->delete_end->currentIndex();
-
-//    if (beginIndex >= 0 && beginIndex < path.getSites().size() && endIndex >= 0 && endIndex < path.getSites().size())
-//    {
-//        path.deleteEdge(beginIndex, endIndex);
-//        QMessageBox::information(this, "道路删除成功", "道路删除成功！");
-//    }
-//    else
-//    {
-//        QMessageBox::warning(this, "错误", "请选择有效的起点和终点！");
-//    }
-//}
 
 void MainWindow::updateComboBox() {
     ui->combo_begin->clear();
