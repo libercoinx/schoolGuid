@@ -3,8 +3,7 @@
 * 求解最短路程
 * 实现景点的添加和删除
 * 实现路径的添加和删除
-## 后端存储结构和基本定义
-'  
+## 后端存储结构和基本定义 
 
     struct Site  
     {  
@@ -19,7 +18,6 @@
         std::vector<Site> sites;  //存储景点的数组
         std::vector<std::vector<int>> edges;  //存储边的矩阵
     };
-'  
 
 ## log
 ### 7.3
