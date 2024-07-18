@@ -8,16 +8,16 @@
 
     struct Site  
     {  
-        QString name;  
-        QString info;  
+        QString name;  //景点名
+        QString info;  //景点信息
         
         Site(QString name, QString info) : name(name), info(info) {}
     };
 
     class Path {
     private:
-        std::vector<Site> sites;
-        std::vector<std::vector<int>> edges;
+        std::vector<Site> sites;  //存储景点的数组
+        std::vector<std::vector<int>> edges;  //存储边的矩阵
     };
 '  
 
