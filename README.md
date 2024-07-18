@@ -4,20 +4,21 @@
 * 实现景点的添加和删除
 * 实现路径的添加和删除
 ## 后端存储结构和基本定义
-'
-struct Site
-{
-    QString name;
-    QString info;
+'  
 
-    Site(QString name, QString info) : name(name), info(info) {}
-};
+    struct Site  
+    {  
+        QString name;  
+        QString info;  
+        
+        Site(QString name, QString info) : name(name), info(info) {}
+    };
 
-class Path {
-private:
-    std::vector<Site> sites;
-    std::vector<std::vector<int>> edges;
-};
+    class Path {
+    private:
+        std::vector<Site> sites;
+        std::vector<std::vector<int>> edges;
+    };
 '  
 
 ## log
